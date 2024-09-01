@@ -1,3 +1,8 @@
+variable "compartment_id" {
+  description = "(Required) (Updatable) The [OCID](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of the compartment."
+  type        = string
+}
+
 variable "actions" {
   description = "(Optional) (Updatable) Predefined actions for use in multiple different rules. Not all actions are supported in every module. Some actions terminate further execution of modules and rules in a module and some do not. Actions names must be unique within this array. "
   type = list(object({
@@ -14,11 +19,6 @@ variable "actions" {
     type = string
   }))
   default = null
-}
-
-variable "compartment_id" {
-  description = "(Required) (Updatable) The [OCID](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of the compartment."
-  type        = string
 }
 
 variable "defined_tags" {
@@ -66,30 +66,30 @@ variable "request_protection" {
       is_body_inspection_enabled = optional(bool)
       name                       = string
       protection_capabilities = list(object({
-	action_name                    = optional(string)
-	collaborative_action_threshold = optional(string)
-	collaborative_weights = optional(object({
-	  key    = string
-	  weight = number
-	}))
-	exclusions = optional(object({
-	  args = optional(list(object({
-	    request_cookies = optional(list(string))
-	    key             = string
-	    version         = number
-	  })))
-	}))
-	key     = number
-	version = number
+        action_name                    = optional(string)
+        collaborative_action_threshold = optional(string)
+        collaborative_weights = optional(object({
+          key    = string
+          weight = number
+        }))
+        exclusions = optional(object({
+          args = optional(list(object({
+            request_cookies = optional(list(string))
+            key             = string
+            version         = number
+          })))
+        }))
+        key     = number
+        version = number
       }))
       protection_capability_settings = optional(object({
-	allowed_http_methods           = optional(list(string))
-	max_http_request_header_length = optional(number)
-	max_http_request_headers       = optional(number)
-	max_number_of_arguments        = optional(number)
-	max_single_argument_length     = optional(number)
-	max_total_argument_length      = optional(number)
-	type                           = string
+        allowed_http_methods           = optional(list(string))
+        max_http_request_header_length = optional(number)
+        max_http_request_headers       = optional(number)
+        max_number_of_arguments        = optional(number)
+        max_single_argument_length     = optional(number)
+        max_total_argument_length      = optional(number)
+        type                           = string
       }))
       type = string
     })))
@@ -105,9 +105,9 @@ variable "request_rate_limiting" {
       condition          = string
       condition_language = string
       configurations = object({
-	action_duration_in_seconds = optional(number)
-	period_in_seconds          = number
-	requests_limit             = number
+        action_duration_in_seconds = optional(number)
+        period_in_seconds          = number
+        requests_limit             = number
       })
       name = string
       type = string
@@ -140,26 +140,26 @@ variable "response_protection" {
       is_body_inspection_enabled = optional(bool)
       name                       = string
       protection_capabilities = list(object({
-	action_name                    = optional(string)
-	collaborative_action_threshold = optional(number)
-	collaborative_weights = optional(object({
-	  key    = string
-	  weight = number
-	}))
-	exclusions = optional(object({
-	  args            = optional(list(string))
-	  request_cookies = optional(list(string))
-	}))
-	key     = string
-	version = number
-	protection_capability_settings = optional(object({
-	  allowed_http_methods           = optional(list(string))
-	  max_http_request_header_length = optional(number)
-	  max_http_request_headers       = optional(number)
-	  max_number_of_arguments        = optional(number)
-	  max_single_argument_length     = optional(number)
-	  max_total_argument_length      = optional(number)
-	}))
+        action_name                    = optional(string)
+        collaborative_action_threshold = optional(number)
+        collaborative_weights = optional(object({
+          key    = string
+          weight = number
+        }))
+        exclusions = optional(object({
+          args            = optional(list(string))
+          request_cookies = optional(list(string))
+        }))
+        key     = string
+        version = number
+        protection_capability_settings = optional(object({
+          allowed_http_methods           = optional(list(string))
+          max_http_request_header_length = optional(number)
+          max_http_request_headers       = optional(number)
+          max_number_of_arguments        = optional(number)
+          max_single_argument_length     = optional(number)
+          max_total_argument_length      = optional(number)
+        }))
       }))
       type = string
     })))

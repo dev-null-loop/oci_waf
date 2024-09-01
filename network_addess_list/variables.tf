@@ -38,6 +38,7 @@ variable "type" {
 
 variable "vcn_addresses" {
   description = "(Required when type=VCN_ADDRESSES) (Updatable) A list of private address prefixes, each associated with a particular VCN. To specify all addresses in a VCN, use \"0.0.0.0/0\" for IPv4 and \"::/0\" for IPv6."
+  type        = list(string)
 }
 
 variable "vcn_id" {
