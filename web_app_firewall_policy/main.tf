@@ -8,8 +8,9 @@ resource "oci_waf_web_app_firewall_policy" "this" {
       dynamic "body" {
         for_each = actions.value.body[*]
         content {
-          text = body.value.text
-          type = body.value.type
+          template = body.value.template
+          text     = body.value.text
+          type     = body.value.type
         }
       }
       code = actions.value.code

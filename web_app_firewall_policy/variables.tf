@@ -7,8 +7,9 @@ variable "actions" {
   description = "(Optional) (Updatable) Predefined actions for use in multiple different rules. Not all actions are supported in every module. Some actions terminate further execution of modules and rules in a module and some do not. Actions names must be unique within this array. "
   type = list(object({
     body = optional(object({
-      text = optional(string)
-      type = string
+      text     = optional(string)
+      template = optional(string)
+      type     = string
     }))
     code = optional(string)
     headers = optional(list(object({
