@@ -7,7 +7,7 @@ variable "actions" {
   description = "(Optional) (Updatable) Predefined actions for use in multiple different rules. Not all actions are supported in every module. Some actions terminate further execution of modules and rules in a module and some do not. Actions names must be unique within this array. "
   type = list(object({
     body = optional(object({
-      text = string
+      text = optional(string)
       type = string
     }))
     code = optional(string)
@@ -43,13 +43,13 @@ variable "request_access_control" {
   description = "(Optional) (Updatable) Module that allows inspection of HTTP request properties and to return a defined HTTP response. In this module, rules with the name 'Default Action' are not allowed, since this name is reserved for default action logs."
   type = object({
     default_action_name = string
-    rules = optional(object({
+    rules = optional(list(object({
       action_name        = string
       condition          = string
       condition_language = string
       name               = string
       type               = string
-    }))
+    })))
   })
   default = null
 }

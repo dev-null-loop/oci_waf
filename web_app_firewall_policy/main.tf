@@ -1,6 +1,5 @@
 resource "oci_waf_web_app_firewall_policy" "this" {
   compartment_id = var.compartment_id
-
   dynamic "actions" {
     for_each = var.actions != null ? var.actions : []
     content {
@@ -23,11 +22,9 @@ resource "oci_waf_web_app_firewall_policy" "this" {
       }
     }
   }
-
   defined_tags  = var.defined_tags
   display_name  = var.display_name
   freeform_tags = var.freeform_tags
-
   dynamic "request_access_control" {
     for_each = var.request_access_control[*]
     iterator = rac
@@ -45,7 +42,6 @@ resource "oci_waf_web_app_firewall_policy" "this" {
       }
     }
   }
-
   dynamic "request_protection" {
     for_each = var.request_protection[*]
     iterator = rp
