@@ -56,7 +56,7 @@ resource "oci_waf_web_app_firewall_policy" "this" {
           action_name = r.value.action_name
           name        = r.value.name
           dynamic "protection_capabilities" {
-            for_each = r.value.protection_capabilities != null ? r.value.protection_capabilities : []
+            for_each = r.value.protection_capabilities
             iterator = pc
             content {
               key                            = pc.value.key
