@@ -6,8 +6,12 @@ resource "oci_waf_network_address_list" "this" {
   display_name   = var.display_name
   freeform_tags  = var.freeform_tags
   system_tags    = var.system_tags
-  vcn_addresses {
-    addresses = var.vcn_addresses
-    vcn_id    = var.vcn_id
+  dynamic "vcn_addresses" {
+    for_each = var.vcn_addresses
+    iterator = va
+    content {
+      addresses = va.value.addresses
+      vcn_id    = va.value.vcn_id
+    }
   }
 }
