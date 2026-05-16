@@ -1,24 +1,27 @@
 resource "oci_waf_web_app_firewall_policy" "this" {
   compartment_id = var.compartment_id
   dynamic "actions" {
-    for_each = var.actions != null ? var.actions : []
+    for_each = var.actions
+    iterator = ac
     content {
-      name = actions.value.name
-      type = actions.value.type
+      name = ac.value.name
+      type = ac.value.type
       dynamic "body" {
-        for_each = actions.value.body[*]
+        for_each = ac.value.body[*]
+        iterator = bo
         content {
-          template = body.value.template
-          text     = body.value.text
-          type     = body.value.type
+          text     = bo.value.text
+          type     = bo.value.type
+          template = bo.value.template
         }
       }
-      code = actions.value.code
+      code = ac.value.code
       dynamic "headers" {
-        for_each = actions.value.headers != null ? actions.value.headers : []
+        for_each = ac.value.headers
+        iterator = he
         content {
-          name  = headers.value.name
-          value = headers.value.value
+          name  = he.value.name
+          value = he.value.value
         }
       }
     }
@@ -32,13 +35,14 @@ resource "oci_waf_web_app_firewall_policy" "this" {
     content {
       default_action_name = rac.value.default_action_name
       dynamic "rules" {
-        for_each = rac.value.rules[*]
+        for_each = rac.value.rules
+        iterator = ru
         content {
-          action_name        = rules.value.action_name
-          name               = rules.value.name
-          type               = rules.value.type
-          condition          = rules.value.condition
-          condition_language = rules.value.condition_language
+          action_name        = ru.value.action_name
+          name               = ru.value.name
+          type               = ru.value.type
+          condition          = ru.value.condition
+          condition_language = ru.value.condition_language
         }
       }
     }
@@ -51,12 +55,12 @@ resource "oci_waf_web_app_firewall_policy" "this" {
       body_inspection_size_limit_in_bytes             = rp.value.body_inspection_size_limit_in_bytes
       dynamic "rules" {
         for_each = rp.value.rules
-        iterator = r
+        iterator = ru
         content {
-          action_name = r.value.action_name
-          name        = r.value.name
+          action_name = ru.value.action_name
+          name        = ru.value.name
           dynamic "protection_capabilities" {
-            for_each = r.value.protection_capabilities
+            for_each = ru.value.protection_capabilities
             iterator = pc
             content {
               key                            = pc.value.key
@@ -64,7 +68,7 @@ resource "oci_waf_web_app_firewall_policy" "this" {
               action_name                    = pc.value.action_name
               collaborative_action_threshold = pc.value.collaborative_action_threshold
               dynamic "collaborative_weights" {
-                for_each = pc.value.collaborative_weights[*]
+                for_each = pc.value.collaborative_weights
                 iterator = cw
                 content {
                   key    = cw.value.key
@@ -73,99 +77,97 @@ resource "oci_waf_web_app_firewall_policy" "this" {
               }
               dynamic "exclusions" {
                 for_each = pc.value.exclusions[*]
+                iterator = ex
                 content {
-                  args            = exclusions.value.args
-                  request_cookies = exclusions.value.request_cookies
+                  args            = ex.value.args
+                  request_cookies = ex.value.request_cookies
                 }
               }
             }
           }
-          type                       = r.value.type
-          condition                  = r.value.condition
-          condition_language         = r.value.condition_language
-          is_body_inspection_enabled = r.value.is_body_inspection_enabled
+          type                       = ru.value.type
+          condition                  = ru.value.condition
+          condition_language         = ru.value.condition_language
+          is_body_inspection_enabled = ru.value.is_body_inspection_enabled
           dynamic "protection_capability_settings" {
-            for_each = r.value.protection_capability_settings[*]
-            iterator = pcs
+            for_each = ru.value.protection_capability_settings[*]
+            iterator = ps
             content {
-              allowed_http_methods           = pcs.value.allowed_http_methods
-              max_http_request_header_length = pcs.value.max_http_request_header_length
-              max_http_request_headers       = pcs.value.max_http_request_headers
-              max_number_of_arguments        = pcs.value.max_number_of_arguments
-              max_single_argument_length     = pcs.value.max_single_argument_length
-              max_total_argument_length      = pcs.value.max_total_argument_length
+              allowed_http_methods           = ps.value.allowed_http_methods
+              max_http_request_header_length = ps.value.max_http_request_header_length
+              max_http_request_headers       = ps.value.max_http_request_headers
+              max_number_of_arguments        = ps.value.max_number_of_arguments
+              max_single_argument_length     = ps.value.max_single_argument_length
+              max_total_argument_length      = ps.value.max_total_argument_length
             }
           }
         }
       }
     }
   }
-
   dynamic "request_rate_limiting" {
     for_each = var.request_rate_limiting[*]
-    iterator = rrl
+    iterator = rr
     content {
       dynamic "rules" {
-        for_each = rrl.value.rules != null ? rrl.value.rules : []
+        for_each = rr.value.rules
+        iterator = ru
         content {
-          action_name        = rules.value.action_name
-          condition          = rules.value.condition
-          condition_language = rules.value.condition_language
+          action_name = ru.value.action_name
           dynamic "configurations" {
-            for_each = rules.value.configurations[*]
+            for_each = ru.value.configurations
+            iterator = co
             content {
-              action_duration_in_seconds = configurations.value.action_duration_in_seconds
-              period_in_seconds          = configurations.value.period_in_seconds
-              requests_limit             = configurations.value.requests_limit
+              period_in_seconds          = co.value.period_in_seconds
+              requests_limit             = co.value.requests_limit
+              action_duration_in_seconds = co.value.action_duration_in_seconds
             }
           }
-          name = rules.value.name
-          type = rules.value.type
+          name               = ru.value.name
+          type               = ru.value.type
+          condition          = ru.value.condition
+          condition_language = ru.value.condition_language
         }
       }
     }
   }
-
   dynamic "response_access_control" {
     for_each = var.response_access_control[*]
     iterator = rac
     content {
       dynamic "rules" {
-        for_each = rac.value.rules[*]
+        for_each = rac.value.rules
+        iterator = ru
         content {
-          action_name        = rules.value.action_name
-          name               = rules.value.name
-          type               = rules.value.type
-          condition          = rules.value.condition
-          condition_language = rules.value.condition_language
+          action_name        = ru.value.action_name
+          name               = ru.value.name
+          type               = ru.value.type
+          condition          = ru.value.condition
+          condition_language = ru.value.condition_language
         }
       }
     }
   }
-
   dynamic "response_protection" {
     for_each = var.response_protection[*]
-    iterator = rr
+    iterator = rp
     content {
       dynamic "rules" {
-        for_each = rr.value.rules != null ? rr.value.rules : []
+        for_each = rp.value.rules
+        iterator = ru
         content {
-          action_name                = rules.value.action_name
-          condition                  = rules.value.condition
-          condition_language         = rules.value.condition_language
-          is_body_inspection_enabled = rules.value.is_body_inspection_enabled
-          name                       = rules.value.name
-
+          action_name = ru.value.action_name
+          name        = ru.value.name
           dynamic "protection_capabilities" {
-            for_each = rules.value.protection_capabilities != null ? rules.value.protection_capabilities : []
+            for_each = ru.value.protection_capabilities
             iterator = pc
             content {
-              action_name                    = pc.value.action_name
-              collaborative_action_threshold = pc.value.collaborative_action_threshold
               key                            = pc.value.key
               version                        = pc.value.version
+              action_name                    = pc.value.action_name
+              collaborative_action_threshold = pc.value.collaborative_action_threshold
               dynamic "collaborative_weights" {
-                for_each = pc.value.collaborative_weigths[*]
+                for_each = pc.value.collaborative_weights
                 iterator = cw
                 content {
                   key    = cw.value.key
@@ -174,30 +176,33 @@ resource "oci_waf_web_app_firewall_policy" "this" {
               }
               dynamic "exclusions" {
                 for_each = pc.value.exclusions[*]
+                iterator = ex
                 content {
-                  args            = exclusions.value.args
-                  request_cookies = exclusions.value.request_cookies
+                  args            = ex.value.args
+                  request_cookies = ex.value.request_cookies
                 }
               }
             }
           }
+          type                       = ru.value.type
+          condition                  = ru.value.condition
+          condition_language         = ru.value.condition_language
+          is_body_inspection_enabled = ru.value.is_body_inspection_enabled
           dynamic "protection_capability_settings" {
-            for_each = rules.value.protection_capability_settings[*]
-            iterator = pcs
+            for_each = ru.value.protection_capability_settings[*]
+            iterator = ps
             content {
-              allowed_http_methods           = pcs.value.allowed_http_methods
-              max_http_request_header_length = pcs.value.max_http_request_header_length
-              max_http_request_headers       = pcs.value.max_http_request_headers
-              max_number_of_arguments        = pcs.value.max_number_of_arguments
-              max_single_argument_length     = pcs.value.max_single_argument_length
-              max_total_argument_length      = pcs.value.max_total_argument_length
+              allowed_http_methods           = ps.value.allowed_http_methods
+              max_http_request_header_length = ps.value.max_http_request_header_length
+              max_http_request_headers       = ps.value.max_http_request_headers
+              max_number_of_arguments        = ps.value.max_number_of_arguments
+              max_single_argument_length     = ps.value.max_single_argument_length
+              max_total_argument_length      = ps.value.max_total_argument_length
             }
           }
-          type = rules.value.type
         }
       }
     }
   }
-
   system_tags = var.system_tags
 }
