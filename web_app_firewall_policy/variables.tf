@@ -1,10 +1,10 @@
 variable "compartment_id" {
-  description = "The [OCID](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of the compartment."
+  description = "(Required) (Updatable) The [OCID](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of the compartment."
   type        = string
 }
 
 variable "actions" {
-  description = "Predefined actions for use in multiple different rules. Not all actions are supported in every module. Some actions terminate further execution of modules and rules in a module and some do not. Actions names must be unique within this array."
+  description = "(Optional) (Updatable) Predefined actions for use in multiple different rules. Not all actions are supported in every module. Some actions terminate further execution of modules and rules in a module and some do not. Actions names must be unique within this array."
   type = list(object({
     name = string
     type = string
@@ -23,25 +23,25 @@ variable "actions" {
 }
 
 variable "defined_tags" {
-  description = "Defined tags for this resource. Each key is predefined and scoped to a namespace. Example: `{\"foo-namespace.bar-key\": \"value\"}`"
+  description = "(Optional) (Updatable) Defined tags for this resource. Each key is predefined and scoped to a namespace. Example: `{\"foo-namespace.bar-key\": \"value\"}`"
   type        = map(string)
   default     = null
 }
 
 variable "display_name" {
-  description = "WebAppFirewallPolicy display name, can be renamed."
+  description = "(Optional) (Updatable) WebAppFirewallPolicy display name, can be renamed."
   type        = string
   default     = null
 }
 
 variable "freeform_tags" {
-  description = "Simple key-value pair that is applied without any predefined name, type or scope. Exists for cross-compatibility only. Example: `{\"bar-key\": \"value\"}`"
+  description = "(Optional) (Updatable) Simple key-value pair that is applied without any predefined name, type or scope. Exists for cross-compatibility only. Example: `{\"bar-key\": \"value\"}`"
   type        = map(string)
   default     = {}
 }
 
 variable "request_access_control" {
-  description = "Module that allows inspection of HTTP request properties and to return a defined HTTP response. In this module, rules with the name 'Default Action' are not allowed, since this name is reserved for default action logs."
+  description = "(Optional) (Updatable) Module that allows inspection of HTTP request properties and to return a defined HTTP response. In this module, rules with the name 'Default Action' are not allowed, since this name is reserved for default action logs."
   type = object({
     default_action_name = string
     rules = optional(list(object({
@@ -56,7 +56,7 @@ variable "request_access_control" {
 }
 
 variable "request_protection" {
-  description = "Module that allows to enable OCI-managed protection capabilities for incoming HTTP requests."
+  description = "(Optional) (Updatable) Module that allows to enable OCI-managed protection capabilities for incoming HTTP requests."
   type = object({
     body_inspection_size_limit_exceeded_action_name = optional(string)
     body_inspection_size_limit_in_bytes             = optional(number, 8192)
@@ -95,7 +95,7 @@ variable "request_protection" {
 }
 
 variable "request_rate_limiting" {
-  description = "Module that allows inspection of HTTP connection properties and to limit requests frequency for a given key."
+  description = "(Optional) (Updatable) Module that allows inspection of HTTP connection properties and to limit requests frequency for a given key."
   type = object({
     rules = optional(list(object({
       action_name        = string
@@ -114,7 +114,7 @@ variable "request_rate_limiting" {
 }
 
 variable "response_access_control" {
-  description = "Module that allows inspection of HTTP response properties and to return a defined HTTP response."
+  description = "(Optional) (Updatable) Module that allows inspection of HTTP response properties and to return a defined HTTP response."
   type = object({
     rules = optional(list(object({
       action_name        = string
@@ -128,7 +128,7 @@ variable "response_access_control" {
 }
 
 variable "response_protection" {
-  description = "Module that allows to enable OCI-managed protection capabilities for HTTP responses."
+  description = "(Optional) (Updatable) Module that allows to enable OCI-managed protection capabilities for HTTP responses."
   type = object({
     rules = optional(list(object({
       action_name                = string
@@ -165,7 +165,7 @@ variable "response_protection" {
 }
 
 variable "system_tags" {
-  description = "Usage of system tag keys. These predefined keys are scoped to namespaces. Example: `{\"orcl-cloud.free-tier-retained\": \"true\"}`"
+  description = "(Optional) (Updatable) Usage of system tag keys. These predefined keys are scoped to namespaces. Example: `{\"orcl-cloud.free-tier-retained\": \"true\"}`"
   type        = map(string)
   default     = null
 }
